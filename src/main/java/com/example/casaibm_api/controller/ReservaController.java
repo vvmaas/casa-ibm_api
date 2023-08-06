@@ -30,7 +30,6 @@ public class ReservaController {
     @PostMapping
     public ResponseEntity<Reserva> create(@RequestBody ReservaDTO body) {
         Reserva obj = service.fromDTO(body);
-        obj.setStatus(Status.CONFIRMADA);
         obj = service.create(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(obj);
