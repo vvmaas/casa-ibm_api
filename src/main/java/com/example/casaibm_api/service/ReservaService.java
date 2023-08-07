@@ -1,26 +1,22 @@
 package com.example.casaibm_api.service;
 
-import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.casaibm_api.domain.Data;
 import com.example.casaibm_api.domain.Reserva;
 import com.example.casaibm_api.domain.Status;
 import com.example.casaibm_api.dto.ReservaDTO;
-import com.example.casaibm_api.repository.DataRepository;
 import com.example.casaibm_api.repository.ReservaRepository;
 import com.example.casaibm_api.service.exceptions.BadRequestException;
-import com.example.casaibm_api.service.exceptions.ConflictException;
 import com.example.casaibm_api.service.exceptions.ObjectNotFoundException;
 
 @Service
 public class ReservaService {
 
     @Autowired
-    private DataRepository dataRepository;
+    private DataService dataService;
     
     @Autowired
     private ReservaRepository repository;
@@ -28,8 +24,7 @@ public class ReservaService {
     public Reserva create(Reserva obj) {
         checkCreateBody(obj);
         obj.setStatus(Status.CONFIRMADA);
-        checkDates(obj.getDataInicio().getTime(), obj.getDataFim().getTime());
-        saveDates(obj.getDataInicio().getTime(), obj.getDataFim().getTime());
+        dataService.saveDates(obj.getDataInicio().getTime(), obj.getDataFim().getTime());
         return repository.save(obj);
     }
 
@@ -38,32 +33,43 @@ public class ReservaService {
     }
 
     public Reserva findById(Integer id) {
-        Reserva reserva = repository.findById(id).orElseThrow(() -> 
+        return repository.findById(id).orElseThrow(() -> 
         new ObjectNotFoundException(
                 "Reserva não encontrada. \n O código de registro " + id + " não existe."
             ));
-        checkCancelledReserva(reserva);
-        return reserva;
     }
 
     public Reserva delete(Integer id) {
         Reserva reserva = findById(id);
+        checkCancelledReserva(reserva);
         reserva.setStatus(Status.CANCELADA);
+        dataService.deleteDates(reserva.getDataInicio().getTime(), reserva.getDataFim().getTime());
         return repository.save(reserva);
     }
 
-    public Reserva update(Reserva obj) {
-        Reserva data = findById(obj.getId());
-        updateData(data, obj);
-        return repository.save(data);
-    }
+    public Reserva update(Reserva obj) {  
+        Reserva reserva = findById(obj.getId());
+        checkCancelledReserva(reserva);
+        if(obj.getStatus() == Status.CANCELADA) {
+            throw new BadRequestException(
+                "Dados inválidos.\n Para cancelar a reserva, envie uma requisição DELETE para /reservas/" + obj.getId() + "/cancelar"
+                );
+        }
+        
+        if(obj.getDataInicio() == null) obj.setDataInicio(reserva.getDataInicio());
+        if(obj.getDataFim() == null) obj.setDataFim(reserva.getDataFim());
 
-     private void updateData(Reserva data, Reserva update) {
-        data.setNomeHospede(update.getNomeHospede());
+        dataService.updateDates(reserva.getDataInicio().getTime(), reserva.getDataFim().getTime(), obj.getDataInicio().getTime(), obj.getDataFim().getTime());
+        updateReserva(reserva, obj);
+        return repository.save(reserva);
+    } 
+
+     private void updateReserva(Reserva data, Reserva update) {
+        if(update.getNomeHospede() != null) data.setNomeHospede(update.getNomeHospede());
         data.setDataInicio(update.getDataInicio());
         data.setDataFim(update.getDataFim());
-        data.setQuantidadePessoas(update.getQuantidadePessoas());
-        data.setStatus(update.getStatus());
+        if(update.getQuantidadePessoas() != null) data.setQuantidadePessoas(update.getQuantidadePessoas());
+        if(update.getStatus() != null) data.setStatus(update.getStatus());
     }
 
     private void checkCancelledReserva(Reserva obj) {
@@ -79,33 +85,6 @@ public class ReservaService {
             throw new BadRequestException(
                 "Dados inválidos para criação da reserva. Campos ID e STATUS não devem ser enviados"
                 );
-        }
-    }
-
-    private void checkDates(Long start, Long end) {
-        start += 86400000;
-        end += 86400000;
-
-        while(!start.equals(end + 86400000)){
-            Data dia = dataRepository.findByDia(new Date(start));
-            if(dia != null){
-                throw new ConflictException(
-                    "Dados inválidos.\n O dia " + dia + " não está disponível. Selecione uma nova data."
-                );
-            }
-            System.out.println(dia);
-            start += 86400000;
-        }
-    }
-
-    private void saveDates(Long start, Long end) {
-        start += 86400000;
-        end += 86400000;
-
-        while(!start.equals(end + 86400000)){
-            Data dia = new Data(new Date(start));
-            dataRepository.save(dia);
-            start += 86400000;
         }
     }
 

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.casaibm_api.domain.Reserva;
-import com.example.casaibm_api.domain.Status;
 import com.example.casaibm_api.dto.ReservaDTO;
 import com.example.casaibm_api.service.ReservaService;
 
@@ -56,7 +55,7 @@ public class ReservaController {
         return ResponseEntity.created(uri).body(obj);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/cancelar")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
