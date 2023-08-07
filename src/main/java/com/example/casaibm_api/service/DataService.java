@@ -23,7 +23,7 @@ public class DataService {
     }
 
     //Essa variável indica o valor de 1 dia em milissegundos 
-    //É adicionada em chamadas de new Date() pois, sem essa adição, o retorno viria sempre 1 dia antes do que o desejado.
+    //É utilizada em chamadas de new Date() para compensar o comportamento da função.
     private Integer day = 86400000;
 
     private void checkDatesCreate(Long start, Long end) {
@@ -97,6 +97,6 @@ public class DataService {
     }
 
     private Date newDate(Long data){
-        return new Date(data + day);
+        return new Date(data + day/2);
     }
 }
