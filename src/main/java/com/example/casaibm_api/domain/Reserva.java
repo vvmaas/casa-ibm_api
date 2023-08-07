@@ -3,7 +3,6 @@ package com.example.casaibm_api.domain;
 import java.util.Date;
 import java.io.Serializable;
 
-import com.example.casaibm_api.dto.ReservaDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.*;

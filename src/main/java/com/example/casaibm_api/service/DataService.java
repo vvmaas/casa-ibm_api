@@ -26,7 +26,7 @@ public class DataService {
     //É adicionada em chamadas de new Date() pois, sem essa adição, o retorno viria sempre 1 dia antes do que o desejado.
     private Integer day = 86400000;
 
-    public void checkDatesCreate(Long start, Long end) {
+    private void checkDatesCreate(Long start, Long end) {
         validateDates(start, end);
         List<Date> invalidos = new ArrayList<Date>();
 
@@ -43,7 +43,7 @@ public class DataService {
             }
     }
 
-    public void checkDatesUpdate(Long oldStart, Long oldEnd, Long newStart, Long newEnd) {
+    private void checkDatesUpdate(Long oldStart, Long oldEnd, Long newStart, Long newEnd) {
         validateDates(newStart, newEnd);
         List<Date> invalidos = new ArrayList<Date>();
 
@@ -72,6 +72,14 @@ public class DataService {
         insertDates(newStart, newEnd);
     }
 
+    public void deleteDates(Long start, Long end) {
+        while(!start.equals(end + day)){
+            Data dia = repository.findByDia(newDate(start));
+            repository.deleteById(dia.getId());
+            start += day;
+        }
+    }
+
     private void insertDates(Long start, Long end) {
         while(!start.equals(end + day)){
             Data dia = new Data(newDate(start));
@@ -90,13 +98,5 @@ public class DataService {
 
     private Date newDate(Long data){
         return new Date(data + day);
-    }
-
-    public void deleteDates(Long start, Long end) {
-        while(!start.equals(end + day)){
-            Data dia = repository.findByDia(newDate(start));
-            repository.deleteById(dia.getId());
-            start += day;
-        }
     }
 }
