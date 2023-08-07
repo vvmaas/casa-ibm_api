@@ -1,7 +1,5 @@
 package com.example.casaibm_api.service;
 
-
-import com.example.casaibm_api.domain.Data;
 import com.example.casaibm_api.domain.Reserva;
 import com.example.casaibm_api.domain.Status;
 import com.example.casaibm_api.repository.ReservaRepository;
@@ -9,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
