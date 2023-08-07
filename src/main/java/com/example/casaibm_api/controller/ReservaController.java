@@ -51,7 +51,7 @@ public class ReservaController {
         Reserva obj = service.fromDTO(body);
         obj.setId(id);
         obj = service.update(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(obj);
     }
 

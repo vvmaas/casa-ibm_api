@@ -22,7 +22,7 @@ public class ReservaService {
     private ReservaRepository repository;
 
     public Reserva create(Reserva obj) {
-        checkCreateBody(obj);
+        obj.setId(null);
         obj.setStatus(Status.CONFIRMADA);
         dataService.saveDates(obj.getDataInicio().getTime(), obj.getDataFim().getTime());
         return repository.save(obj);
@@ -78,14 +78,6 @@ public class ReservaService {
                 "A reserva de código " + obj.getId() + " foi cancelada. \n Faça uma nova reserva."
                 );
         } 
-    }
-
-    private void checkCreateBody(Reserva obj) {
-        if(obj.getStatus() != null || obj.getId() != null){
-            throw new BadRequestException(
-                "Dados inválidos para criação da reserva. Campos ID e STATUS não devem ser enviados"
-                );
-        }
     }
 
     public Reserva fromDTO(ReservaDTO dto) {
