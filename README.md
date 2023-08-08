@@ -2,6 +2,10 @@
 
 Essa aplicação Spring Boot foi desenvolvida para viabilizar a reserva de hospedagens em uma casa de temporada. Conta com recursos que facilitam a manipulação e listagem das informações referentes às reservas.
 
+## Front-end
+
+A aplicação front-end que oferece uma interface para interação com essa API pode ser encontrada em https://github.com/vvmaas/casa-ibm_web
+
 
 ## Configuração e instalação
 
@@ -31,10 +35,10 @@ Com o body da requisição no formato:
 
 ```json
 {
-    "nomeHospede": "Gabriel Toledo",
+    "nomeHospede": "Gabriel Toledo",  //minímo de 3 dígitos 
     "dataInicio": "2023-08-10",
     "dataFim": "2023-08-15",
-    "quantidadePessoas": 2
+    "quantidadePessoas": 2    //minímo 1 
 }
 ```
 A rota retorna então:

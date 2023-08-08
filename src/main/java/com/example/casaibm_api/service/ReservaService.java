@@ -22,6 +22,7 @@ public class ReservaService {
     private ReservaRepository repository;
 
     public Reserva create(Reserva obj) {
+        validateReserva(obj);
         obj.setId(null);
         obj.setStatus(Status.CONFIRMADA);
         dataService.saveDates(obj.getDataInicio().getTime(), obj.getDataFim().getTime());
@@ -48,6 +49,7 @@ public class ReservaService {
     }
 
     public Reserva update(Reserva obj) {  
+        validateReserva(obj);
         Reserva reserva = findById(obj.getId());
         checkCancelledReserva(reserva);
         if(obj.getStatus() == Status.CANCELADA) {
@@ -82,5 +84,13 @@ public class ReservaService {
 
     public Reserva fromDTO(ReservaDTO dto) {
         return new Reserva(dto.getId(), dto.getNomeHospede(), dto.getDataInicio(), dto.getDataFim(), dto.getQuantidadePessoas(), dto.getStatus());
+    }
+
+    public void validateReserva(Reserva obj) {
+        if(obj.getNomeHospede().length() < 3 || obj.getQuantidadePessoas() < 1){
+            throw new BadRequestException(
+                "Dados inválidos. \n Verifique as informações e tente novamente."
+                );
+        }
     }
 }
