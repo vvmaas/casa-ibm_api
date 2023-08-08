@@ -13,7 +13,7 @@ import com.example.casaibm_api.domain.Data;
 import com.example.casaibm_api.service.DataService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"https://casa-ibm-web.vercel.app", "http://localhost:4200"})
 @RequestMapping("/dias-reservados")
 public class DataController {
 

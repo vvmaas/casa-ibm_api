@@ -21,7 +21,7 @@ import com.example.casaibm_api.dto.ReservaDTO;
 import com.example.casaibm_api.service.ReservaService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"https://casa-ibm-web.vercel.app", "http://localhost:4200"})
 @RequestMapping("/reservas")
 public class ReservaController {
 
