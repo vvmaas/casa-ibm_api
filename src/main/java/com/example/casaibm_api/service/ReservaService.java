@@ -87,7 +87,12 @@ public class ReservaService {
     }
 
     public void validateReserva(Reserva obj) {
-        if(obj.getNomeHospede().length() < 3 || obj.getQuantidadePessoas() < 1){
+        if(obj.getDataFim() == null || obj.getDataInicio() == null || obj.getNomeHospede() == null || obj.getQuantidadePessoas() == null) {
+            throw new BadRequestException(
+                "Dados faltando. \n Verifique as informações e tente novamente."
+                );
+        }
+        if(obj.getNomeHospede().length() < 3 || obj.getQuantidadePessoas() < 1 ){
             throw new BadRequestException(
                 "Dados inválidos. \n Verifique as informações e tente novamente."
                 );
