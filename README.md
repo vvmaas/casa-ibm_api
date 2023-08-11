@@ -2,11 +2,11 @@
 
 Essa aplicação Spring Boot foi desenvolvida para viabilizar a reserva de hospedagens em uma casa de temporada. Conta com recursos que facilitam a manipulação e listagem das informações referentes às reservas.
 
-Link deploy: https://casaibm-api.onrender.com
+### Link front-end: https://casa-ibm-web.vercel.app
 
-Link front-end: https://casa-ibm-web.vercel.app
+Requisições nessa aplicação podem demorar até 2 minutos para responder devido ao deploy feito em modalidade gratuita do Render.
 
-Link repositório front-end: https://github.com/vvmaas/casa-ibm_web
+### Link repositório front-end: https://github.com/vvmaas/casa-ibm_web
 
 
 ## Configuração e instalação
