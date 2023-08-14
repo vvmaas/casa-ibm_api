@@ -9,7 +9,7 @@ Requisições nessa aplicação podem demorar até 2 minutos para responder devi
 ### Link repositório front-end: https://github.com/vvmaas/casa-ibm_web
 
 
-## Configuração e instalação
+## Configuração e instalação local
 
 Siga estas etapas para configurar e executar o back-end:
 
